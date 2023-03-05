@@ -1,17 +1,34 @@
-name: CI/CD API
-on: push
+name: CI
+on: [push]
+
 jobs:
-  test:
+  build:
     name: Test API
     runs-on: ubuntu-latest
     steps:
-      - name: Get repo code
-        uses: actions/checkout@v3
-      - name: Install dependencies
-        run: yarn ci
-      - name: Run Lint
-        run: yarn lint
-      - name: Run Unit tests
-        run: yarn test
+      - uses: actions/checkout@v3
+
+      - name: Set Node.js 19.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 19.x
+
+      - name: Run install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+
+      - name: Run lint
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: lint
+
+      - name: Run unit tests
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: lint
+
       - name: Run e2e tests
-        run: yarn test:e2e
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: test:e2e
