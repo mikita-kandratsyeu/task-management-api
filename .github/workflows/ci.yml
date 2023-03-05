@@ -2,33 +2,54 @@ name: CI
 on: [push]
 
 jobs:
-  build:
-    name: Test API
+  lint:
+    name: ESlint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
       - name: Set Node.js 19.x
         uses: actions/setup-node@v3
         with:
           node-version: 19.x
-
       - name: Run install
         uses: borales/actions-yarn@v4
         with:
           cmd: install
-
       - name: Run lint
         uses: borales/actions-yarn@v4
         with:
           cmd: lint
-
-      - name: Run unit tests
+  unit_test:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set Node.js 19.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 19.x
+      - name: Run install
         uses: borales/actions-yarn@v4
         with:
-          cmd: lint
-
-      - name: Run e2e tests
+          cmd: install
+      - name: Run test
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: test
+  e2e_test:
+    name: E2E tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set Node.js 19.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 19.x
+      - name: Run install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+      - name: Run e2e test
         uses: borales/actions-yarn@v4
         with:
           cmd: test:e2e
